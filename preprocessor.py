@@ -1,12 +1,13 @@
+"""Preprocessing helpers for the Olympic athlete dataset."""
+
 import pandas as pd
 
-def preprocess(df,region_df):
-    # filtering for summer olympics
-    df = df[df['Season'] == 'Summer']
-    # merge with region_df
-    df = df.merge(region_df, on='NOC', how='left')
-    # dropping duplicates
-    df.drop_duplicates(inplace=True)
-    # one hot encoding medals
-    df = pd.concat([df, pd.get_dummies(df['Medal'])], axis=1)
-    return df
+
+def preprocess(df, region_df):
+    """Filter Summer Games, map NOC codes and create medal indicator columns."""
+    summer_df = df.loc[df["Season"] == "Summer"].copy()
+    merged_df = summer_df.merge(region_df, on="NOC", how="left")
+    merged_df = merged_df.drop_duplicates().reset_index(drop=True)
+
+    medal_flags = pd.get_dummies(merged_df["Medal"], dtype="uint8")
+    return pd.concat([merged_df, medal_flags], axis=1)
