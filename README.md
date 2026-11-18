@@ -1,162 +1,86 @@
-# 🏅 Olympic Data Analysis Web App
+# Olympic Data Analysis Web App
 
-### 📌 Live App  
-👉 **Streamlit Deployment:**  
-https://olympic-data-analysis-web-app-am3jfyvy4gxsad7yi4xbug.streamlit.app/
+**Live dashboard:** [Open the Streamlit app](https://olympic-data-analysis-web-app-am3jfyvy4gxsad7yi4xbug.streamlit.app/)
 
----
+This Streamlit application explores historical Summer Olympic data from 1896 to 2016. It provides interactive views of medal tables, participation trends, country performance and athlete demographics.
 
-## 📖 Overview
+## Main features
 
-This **interactive Olympic Data Analysis Web App** allows users to explore **120+ years** of Olympic history through dynamic visualizations and meaningful analytics.
+- **Medal tally:** filter medal counts by Olympic year and country/region.
+- **Overall trends:** view participating nations, events and athletes over time.
+- **Country analysis:** compare a country's medal history and medal-winning sports.
+- **Athlete analysis:** explore age distributions, height/weight patterns and male/female participation by edition.
+- **Most successful athletes:** view medal counts overall or for a selected sport/country.
 
-Built using **Python, Pandas, Plotly, Seaborn, Matplotlib, and Streamlit**, the app provides deep insights into:
+## Technology
 
-- 🥇 Country performance over time  
-- 🧍‍♂️ Athlete demographics (age, height, weight)  
-- 🎯 Most successful athletes & nations  
-- 📅 Trends in participation  
-- 🏆 Medal tallies by year, country, and sport  
+Python, Streamlit, Pandas, NumPy, Plotly, Matplotlib and Seaborn.
 
-The app uses:
-- `athlete_events.csv` → Historical Olympic dataset  
-- `noc_regions.csv` → Country mapping  
+## Run locally
 
----
-
-## 🚀 Features
-
-### 🔹 **Home Dashboard**
-- Total athletes, nations, sports, and medal count  
-- Timeline and participation trends  
-
-### 🔹 **Medal Tally Analyzer**
-Filter medals by:
-- Year  
-- Country  
-- Sport  
-Includes dynamic plots and medal counts  
-
-### 🔹 **Athlete Analysis**
-- Age distribution  
-- Height vs Weight scatterplots  
-- Gender-wise comparisons  
-- Trends of medal-winning athletes  
-
-### 🔹 **Country-wise Analysis**
-- Most successful athletes from selected country  
-- Medal performance by sport  
-- Participation timeline  
-
-### 🔹 **Global Trends**
-- Line charts for growth of events, countries, and athletes over time  
-
----
-
-## 🗂️ Project Structure
-
-```
-├── app.py                   # Main Streamlit app
-├── helper.py                # Data transformation utilities
-├── preprocessor.py          # Data cleaning & merging
-├── athlete_events.csv.gz    # Compressed dataset (<25MB for deployment)
-├── noc_regions.csv          # Country-region mapping
-├── requirements.txt         # Dependencies
-└── README.md                # Documentation
-```
-
----
-
-## 🛠️ Installation (Local Setup)
-
-### **1. Clone the repository**
-```bash
-git clone https://github.com/Goofyparag/olympic-data-analysis-web-app.git
+~~~bash
+git clone https://github.com/PARAG-TIWARI/olympic-data-analysis-web-app.git
 cd olympic-data-analysis-web-app
-```
 
-### **2. Install dependencies**
-```bash
+python -m venv .venv
+
+# Windows PowerShell
+.venv\Scripts\Activate.ps1
+
+# macOS / Linux
+source .venv/bin/activate
+
+python -m pip install --upgrade pip
 pip install -r requirements.txt
-```
-
-### **3. Run the Streamlit app**
-```bash
 streamlit run app.py
-```
+~~~
 
----
+The application expects these files in the repository root:
 
-## 📊 Dataset Information
+- `athlete_events.csv` — athlete and event records.
+- `noc_regions.csv` — NOC-to-region mapping.
 
-### **athlete_events.csv**
-Contains athlete data from **1896 to 2016**, including:
-- Age, Height, Weight  
-- Year, City, Sport, Event  
-- Medal (Gold/Silver/Bronze)  
-- NOC (Nationality)  
+The app reads the files through a cached loader, so the large athlete CSV is not reparsed on every Streamlit interaction.
 
-### **noc_regions.csv**
-Maps NOC codes to:
-- Country Name  
-- Region  
+## Repository structure
 
----
+~~~text
+olympic-data-analysis-web-app/
+├── app.py                 # Streamlit dashboard
+├── helper.py              # Medal, country and athlete analytics
+├── preprocessor.py        # Summer Games filter and NOC mapping
+├── athlete_events.csv     # Historical athlete/event data
+├── noc_regions.csv        # NOC/region reference
+├── requirements.txt
+└── tests/                 # Helper and preprocessing unit tests
+~~~
 
-## 🧰 Tech Stack
+## Data source
 
-| Component       | Technology                       |
-|----------------|-----------------------------------|
-| Web Framework  | Streamlit                         |
-| Data Processing| Pandas, NumPy                     |
-| Visualization  | Plotly, Seaborn, Matplotlib       |
-| Deployment     | Streamlit Community Cloud         |
-| Language       | Python 3.10+                      |
+The repository README attributes the data to Kaggle's **120 Years of Olympic History** dataset: [dataset page](https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results).
 
----
+The data in this repository covers Summer Olympic athlete/event records from 1896 through 2016. The application filters out Winter Games during preprocessing.
 
-## 📦 Requirements
+Check the dataset's current licence and terms before redistributing the CSV or using it for commercial purposes.
 
-Your `requirements.txt` should include:
+## Implementation notes
 
-```
-streamlit
-pandas
-numpy
-plotly
-seaborn
-matplotlib
-scipy
-```
+- Medal tallies deduplicate event/team/medal combinations to avoid counting every athlete in a team event as a separate team medal.
+- Athlete participation by gender is counted once per athlete, region and Olympic year. This avoids counting an athlete only in the first edition in which they appear.
+- The dataset is loaded with `st.cache_data` to reduce repeated 41 MB CSV reads during Streamlit reruns.
+- The dashboard is an exploratory historical analysis tool; its counts reflect the dataset's scope and historical NOC/region mapping.
 
----
+## Tests
 
-## 🌟 Screenshots (Optional)
+Install the development dependencies and run:
 
-You can add screenshots here:
+~~~bash
+pip install -r requirements-dev.txt
+pytest -q
+~~~
 
-```
-![Home Dashboard](link_here)
-![Medal Analysis](link_here)
-```
+## Author
 
----
+Parag Tiwari · [GitHub profile](https://github.com/PARAG-TIWARI)
 
-## 🙌 Acknowledgements
-
-Dataset sourced from:  
-📊 **Kaggle – 120 Years of Olympic History**  
-https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results
-
----
-
-## 📬 Contact
-
-**Author:** Parag Tiwari  
-📧 Email: **paragt2005@gmail.com**  
-🔗 GitHub: https://github.com/Goofyparag  
-
----
-
-## ⭐ Support  
-If you like this project, consider giving the repo a **⭐ star**!
+**Repository:** [PARAG-TIWARI/olympic-data-analysis-web-app](https://github.com/PARAG-TIWARI/olympic-data-analysis-web-app)
